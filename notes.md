@@ -59,6 +59,7 @@ Machine learning follows a repeatable pipeline:
     - of all actual positives, how many did we catch?
   - $$F1 = 2 \cdot \frac{Precision \cdot Recall}{Precision + Recall}$$
     - harmonic mean of prediction and recall
+
 - Metric choice depends on task type
 
 ### Task type
@@ -149,16 +150,16 @@ df["city"] = df["city"].str.lower().str.strip()
 # Convert to datetime
 df["date"] = pd.to_datetime(df["date"])
 
-# Convert to numeric (int/float) 
+# Convert to numeric (int/float)
 df["value"] = pd.to_numeric(df["value"])
 
-# One-hot encoding 
+# One-hot encoding
 encoded = pd.get_dummies(df, columns=["color"])
 
-# Map to consistent boolean 
+# Map to consistent boolean
 df["flag"] = df["flag"].map({"Y": True, "N": False, "True": True, "False": False, "1": True, "0": False})
 
-# Remove non-numeric characters and convert 
+# Remove non-numeric characters and convert
 df["price"] = df["price"].str.replace(r"\D", "", regex=True).astype(float)
 
 # Extract numbers
@@ -246,7 +247,7 @@ df["income_log"] = np.log1p(df["income"])
 ```
 
 - Standardization:
-$$z = \frac{x − mean}{std}$$
+  $$z = \frac{x − mean}{std}$$
 
 #### Text Encoding
 
@@ -518,7 +519,7 @@ plt.show()
 ```
 
 ### Correlation with Target
->
+
 > Supervised Learning
 > feature selection, most predictive features pop
 
@@ -532,7 +533,7 @@ print(corr_target)
 ```
 
 ### Clustering
->
+
 > Unsupervised learning
 > for identifying natural clusters, reducing dimensionality
 
@@ -561,7 +562,7 @@ plt.show()
 - Aggregations
 
 ```python
-agg_user = df.groupby('user_id')['order_amount'].agg(total_spent='sum', 
+agg_user = df.groupby('user_id')['order_amount'].agg(total_spent='sum',
                                                     avg_spent='mean',
                                                     order_count='count').reset_index()
 ```
@@ -1293,16 +1294,16 @@ Depends on the type of task (regression or classification); ensemble metrics are
 - **Learning Curves**  
   Shows training vs validation error as ensemble grows; useful for diagnosing overfitting.
 
-- **Ensemble-Specific Metrics**  
-  - For Gradient Boosting: Improvement in loss per iteration  
+- **Ensemble-Specific Metrics**
+  - For Gradient Boosting: Improvement in loss per iteration
   - For Stacking: Performance of meta-model vs base models
 
 ### Confusion Matrix
 
 | Actual \ Predicted | Positive | Negative |
-|--------------------|----------|----------|
-| Positive           |  TP | FN |
-| Negative           |  FP | TN |
+| ------------------ | -------- | -------- |
+| Positive           | TP       | FN       |
+| Negative           | FP       | TN       |
 
 ---
 
@@ -1502,3 +1503,89 @@ print("MAE:", mae)
 
 - Underfitting → high bias
 - Overfitting → high variance
+
+## L4: Probability related stuff
+
+Expectation
+Variance
+Covariance
+Probability Density Function PDF
+
+- Density Estimation
+  - process of inferring PDF of X
+    choosing a function of PDF = modelling decision (inductive bias)
+- estimating the params:
+  - data is given (observations) (170, 160, 180, 175...) X = heights
+  - find best parameters for the PDF of X
+    - use MLE maximum likelihood estimation (frequentist) p(D | w)
+    - use MAP maimum A Posteriori Estimation (bayesian) p(D | w) p(w)
+- likelihood function
+  - finds Probability of the observed data
+  - if X - p(x|w) -> p(D|w) = PI(p(x_n|w))
+
+- log likelihood function
+  - ln(p(D|w))
+  - easier to deal with summation than products due to logs
+  - log probs are stabler
+  - log = monotonic function
+
+- maximum likelihood estimation steps
+  - modeliing
+    - define log likelihood function
+  - optimization
+    - find params that maximize log likelihood
+
+- example on Bernoulli Distribution
+  - modelling
+    - ln p(D|w)
+  - optimization
+    - derivative of ln p(D|w)
+    - critical points
+    - find max
+
+- example ChatGPT
+  - sum{Document in Internet, ln p(Internet | w)} sum{Word in Document} ln p(Word | Words before it in Document, w)
+
+- bias of estimate
+  - how far the found params are from the true params
+
+- multivariate normal
+  - params become vectors and matrices
+
+- Gaussian Mixture Model GMM
+  - mixture of components (similar to k in kmeans)
+
+- Latent Assignment Variable model
+  - is GMM
+
+- Generative model
+  - is GMM
+
+- Cluster assignment
+
+- Expectation maximization algorithm
+  - used for fitting latent variable models
+  - 1. e-step: find expected log likelihood
+  - 1. m-step: maximize expected log likelihood
+
+# Probability related stuff
+
+Random variable
+
+- includes Random variables, Functions of RV
+
+## Expectation
+
+- weighted average
+- Linearity: E[aX + bY + c] = aE[X] + bE[Y] + c
+
+## Variance
+
+- Covariance
+  - how related two RVs are to each other
+
+Density Estimation
+
+Bias
+
+Maximum likelihood
